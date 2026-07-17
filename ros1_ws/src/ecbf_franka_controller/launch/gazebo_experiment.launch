@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Gazebo FR3 simulation -->
+  <arg name="robot" default="fr3"/>
+  <arg name="arm_id" default="fr3"/>
+  <arg name="controller_name" default="ecbf_controller"/>
+  <arg name="config_file"/>
+
+  <!-- Start FR3 Gazebo -->
+  <include file="$(find franka_gazebo)/launch/fr3.launch">
+    <arg name="arm_id" value="$(arg arm_id)"/>
+    <arg name="use_gripper" value="false"/>
+    <arg name="controller" value=" "/>
+  </include>
+
+
+  <!-- Load controller parameters -->
+  <rosparam command="load" file="$(arg config_file)"/>
+
+
+  <!-- Spawn ECBF controller -->
+  <node
+      name="ecbf_controller_spawner"
+      pkg="controller_manager"
+      type="spawner"
+      output="screen"
+      args="$(arg controller_name)"/>
+
+
+  <!-- Save diagnostics -->
+  <node
+      name="ecbf_diagnostics_csv_logger"
+      pkg="ecbf_franka_controller"
+      type="diagnostics_csv_logger.py"
+      output="screen">
+
+      <param name="filename" value="/tmp/ecbf_gazebo.csv"/>
+
+      <remap
+          from="diagnostics"
+          to="/$(arg controller_name)/diagnostics"/>
+
+  </node>
+
+
+</launch>
