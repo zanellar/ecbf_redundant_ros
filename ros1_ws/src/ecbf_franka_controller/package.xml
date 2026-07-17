@@ -26,6 +26,7 @@
   <exec_depend>franka_control</exec_depend>
   <exec_depend>franka_description</exec_depend>
   <exec_depend>message_runtime</exec_depend>
+  <exec_depend>franka_gazebo</exec_depend>
 
   <export>
     <controller_interface plugin="${prefix}/ecbf_franka_controller_plugin.xml"/>

@@ -18,10 +18,14 @@ def normalize_mode(value: object) -> str:
         "simulation": "simulation",
         "sim": "simulation",
         "mujoco": "simulation",
+        "gazebo": "gazebo",
+        "gazebo_ros1": "gazebo",
         "experiment_ros1": "experiment_ros1",
         "ros1": "experiment_ros1",
         "robot": "experiment_ros1",
     }
     if mode not in aliases:
-        raise ValueError("params.mode must be 'simulation' or 'experiment_ros1'.")
+        raise ValueError(
+            "params.mode must be 'simulation', 'gazebo', or 'experiment_ros1'."
+        )
     return aliases[mode]

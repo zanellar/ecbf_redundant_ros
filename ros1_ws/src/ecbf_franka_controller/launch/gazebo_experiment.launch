@@ -1,26 +1,24 @@
 <?xml version="1.0"?>
 
 <launch>
-
-  <!-- Gazebo FR3 simulation -->
   <arg name="robot" default="fr3"/>
-  <arg name="arm_id" default="fr3"/>
+  <arg name="arm_id" default="$(arg robot)"/>
+  <arg name="use_gripper" default="false"/>
   <arg name="controller_name" default="ecbf_controller"/>
   <arg name="config_file"/>
+  <arg name="log" default="true"/>
+  <arg name="log_file" default="/tmp/ecbf_gazebo.csv"/>
 
-  <!-- Start FR3 Gazebo -->
+  <!-- Start Gazebo without automatically spawning an effort controller. -->
   <include file="$(find franka_gazebo)/launch/fr3.launch">
-    <arg name="arm_id" value="$(arg arm_id)"/>
-    <arg name="use_gripper" value="false"/>
-    <arg name="controller" value=" "/>
+    <arg name="use_gripper" value="$(arg use_gripper)"/>
+    <arg name="controller" value=""/>
   </include>
 
-
-  <!-- Load controller parameters -->
+  <!-- Load generated controller parameters. -->
   <rosparam command="load" file="$(arg config_file)"/>
 
-
-  <!-- Spawn ECBF controller -->
+  <!-- Start the ECBF effort controller. -->
   <node
       name="ecbf_controller_spawner"
       pkg="controller_manager"
@@ -28,21 +26,29 @@
       output="screen"
       args="$(arg controller_name)"/>
 
-
-  <!-- Save diagnostics -->
+  <!-- Log controller diagnostics from the start of the trial. -->
   <node
+      if="$(arg log)"
       name="ecbf_diagnostics_csv_logger"
       pkg="ecbf_franka_controller"
       type="diagnostics_csv_logger.py"
       output="screen">
-
-      <param name="filename" value="/tmp/ecbf_gazebo.csv"/>
-
-      <remap
-          from="diagnostics"
-          to="/$(arg controller_name)/diagnostics"/>
-
+    <param name="filename" value="$(arg log_file)"/>
+    <remap
+        from="diagnostics"
+        to="/$(arg controller_name)/diagnostics"/>
   </node>
 
-
+  <!-- Stop the controller and close Gazebo when runtime expires. -->
+  <node
+      name="ecbf_trial_supervisor"
+      pkg="ecbf_franka_controller"
+      type="trial_supervisor.py"
+      required="true"
+      output="screen">
+    <param name="controller_name" value="$(arg controller_name)"/>
+    <remap
+        from="finished"
+        to="/$(arg controller_name)/finished"/>
+  </node>
 </launch>

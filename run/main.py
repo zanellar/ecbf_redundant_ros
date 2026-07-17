@@ -66,16 +66,19 @@ def run_selected_backend(params: Any) -> Any:
     """Run the backend selected by params.mode using lazy imports."""
     mode = normalize_mode(params.mode)
     debug = bool(getattr(params, "debug", False))
-    
+
     if mode == "simulation":
         from mypkg import simulation
+
         return simulation.run(params, debug=debug)
 
     if mode == "gazebo":
-    from mypkg import gazebo_experiment
-    return gazebo_experiment.run(params)
+        from mypkg import gazebo_experiment
+
+        return gazebo_experiment.run(params, debug=debug)
 
     from mypkg import ros1_experiment
+
     return ros1_experiment.run(params, debug=debug)
 
 

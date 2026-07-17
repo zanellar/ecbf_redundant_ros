@@ -12,12 +12,26 @@ params = SimpleNamespace(
 
     robot="fr3",
     arm_id="fr3",
+    debug=False,
+
+    load_gripper=False,
+    frame="flange",
+
+    pause_between_alphas=False,
+
+    cbf_warmup_time=0.2,
+    abort_on_cbf_infeasible=True,
+    torque_ramp_duration=1.0,
+    derivative_filter_tau=0.01,
+
+    log=True,
+    log_filename="output/gazebo_dirfix.csv",
 
     controller_name="ecbf_controller",
 
     alphas=[-1.0],
 
-    runtime=8.0,
+    runtime=5.0,
 
     CBF_type=CbfType.DIRECTIONAL,
 
@@ -28,8 +42,7 @@ params = SimpleNamespace(
 
     apply_cbf=False,
 
-    hold_current_pose=False,
-
+    hold_current_pose=True,
     target_transition_duration=5.0,
 
     tau_abs_limits=np.array(
@@ -49,7 +62,13 @@ params = SimpleNamespace(
             [0.45,-0.2,0.46]
         ),
 
-        xmat_desired=np.eye(3),
+        xmat_desired=np.array(
+            [
+                [np.sqrt(2.0) / 2.0, np.sqrt(2.0) / 2.0, 0.0],
+                [np.sqrt(2.0) / 2.0, -np.sqrt(2.0) / 2.0, 0.0],
+                [0.0, 0.0, -1.0],
+            ]
+        ),
 
         K_cartesian=np.diag(
             [100,100,100]

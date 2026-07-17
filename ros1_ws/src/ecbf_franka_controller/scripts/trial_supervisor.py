@@ -32,7 +32,7 @@ class TrialSupervisor:
         request.stop_controllers = [self.controller_name]
         request.strictness = SwitchControllerRequest.STRICT
         request.start_asap = False
-        request.timeout = rospy.Duration(2.0)
+        request.timeout = 2.0
         try:
             response = self.switch_controller(request)
             if not response.ok:

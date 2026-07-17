@@ -4,8 +4,7 @@ from __future__ import annotations
 
 import copy
 import os
-import subprocess
-from pathlib import Path
+import subprocess 
 from typing import Any
 
 import numpy as np
@@ -26,7 +25,11 @@ def launch_trial(params: Any, alpha: float, index: int, debug: bool = False) -> 
     """Launch one blocking Gazebo trial using a generated controller YAML file."""
     roslaunch = require_executable("roslaunch")
     config_file = write_trial_yaml(params, alpha)
-    logfile = alpha_log_filename(params.log_filename, alpha, index)
+    logfile = alpha_log_filename(
+        str(getattr(params, "log_filename", "output/gazebo_dirfix.csv")),
+        alpha,
+        index,
+    )
     logfile.parent.mkdir(parents=True, exist_ok=True)
 
     command = [
@@ -40,9 +43,6 @@ def launch_trial(params: Any, alpha: float, index: int, debug: bool = False) -> 
         f"config_file:={config_file}",
         f"log:={bool_arg(getattr(params, 'log', True))}",
         f"log_file:={logfile}",
-        f"headless:={bool_arg(getattr(params, 'headless', False))}",
-        f"paused:={bool_arg(getattr(params, 'paused', False))}",
-        f"rviz:={bool_arg(getattr(params, 'rviz', False))}",
     ]
 
     world = getattr(params, "world", None)
