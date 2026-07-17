@@ -14,8 +14,7 @@
 
 #include <Eigen/Cholesky>
 #include <Eigen/SVD>
-#include <controller_interface/controller_base.h>
-#include <hardware_interface/hardware_interface_exception.h>
+#include <controller_interface/controller_base.h> 
 #include <pluginlib/class_list_macros.h>
 #include <ros/console.h>
 
@@ -151,6 +150,7 @@ void EcbfController::starting(const ros::Time& time) {
 
 /** Execute one 1 kHz state, nominal control, CBF, and effort-command cycle. */
 void EcbfController::update(const ros::Time& time, const ros::Duration& period) {
+  ROS_WARN_THROTTLE(1.0, "ECBF update running");
   const double dt = period.toSec() > 0.0 ? period.toSec() : 0.001;
   updateRobotData(dt);
   data_.elapsed = (time - start_time_).toSec();

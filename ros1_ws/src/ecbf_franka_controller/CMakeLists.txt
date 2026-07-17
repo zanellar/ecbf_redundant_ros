@@ -86,7 +86,10 @@ if(CATKIN_ENABLE_TESTING)
     add_dependencies(test_cbf ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
     target_include_directories(test_cbf SYSTEM PRIVATE ${EIGEN3_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
     target_include_directories(test_cbf PRIVATE include)
-    target_link_libraries(test_cbf ${catkin_LIBRARIES})
+    target_link_libraries(test_cbf
+      ${catkin_LIBRARIES}
+      gtest_main
+    )
   endif()
 
   catkin_add_gtest(test_math_utils test/test_math_utils.cpp src/math_utils.cpp)
@@ -94,6 +97,9 @@ if(CATKIN_ENABLE_TESTING)
     add_dependencies(test_math_utils ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
     target_include_directories(test_math_utils SYSTEM PRIVATE ${EIGEN3_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
     target_include_directories(test_math_utils PRIVATE include)
-    target_link_libraries(test_math_utils ${catkin_LIBRARIES})
+    target_link_libraries(test_math_utils
+      ${catkin_LIBRARIES}
+      gtest_main
+    )
   endif()
 endif()

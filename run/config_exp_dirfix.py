@@ -25,7 +25,7 @@ params = SimpleNamespace(
 
     # Run one independent physical trial per alpha value.
     # A negative alpha disables the CBF exactly as in simulation.
-    alphas=[-1.0, 5.0],
+    alphas=[-1.0],
     pause_between_alphas=True,
     runtime=8.0,
 
