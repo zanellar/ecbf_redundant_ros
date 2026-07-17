@@ -1,0 +1,6 @@
+<library path="lib/libecbf_franka_controller">
+  <!-- Register the custom ROS 1 ros_control plugin with controller_manager. -->
+  <class name="ecbf_franka_controller/EcbfController" type="ecbf_franka_controller::EcbfController" base_class_type="controller_interface::ControllerBase">
+    <description>Cartesian impedance controller with total, operational, and directional kinetic-energy CBFs.</description>
+  </class>
+</library>

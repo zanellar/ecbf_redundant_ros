@@ -1,0 +1,11 @@
+ECBF Redundant Manipulator Controller
+
+The ROS 1 controller structure and Cartesian impedance implementation are adapted from
+Franka Robotics GmbH's franka_ros Cartesian impedance example controller, licensed under
+the Apache License 2.0.
+
+Original project:
+https://github.com/frankarobotics/franka_ros
+
+The remaining project code is provided under the Apache License 2.0 unless a file states
+otherwise.

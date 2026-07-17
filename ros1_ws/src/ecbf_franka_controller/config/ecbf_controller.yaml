@@ -1,0 +1,35 @@
+# Static example parameters. The Python launcher generates an equivalent file per alpha trial.
+ecbf_controller:
+  type: ecbf_franka_controller/EcbfController
+  arm_id: fr3
+  joint_names: [fr3_joint1, fr3_joint2, fr3_joint3, fr3_joint4, fr3_joint5, fr3_joint6, fr3_joint7]
+  frame: flange
+
+  runtime: 8.0
+  alpha: -1.0
+  cbf_type: 2
+  maximum_energy: 0.1
+  direction: [1.0, 0.0, 0.0]
+  direction_dot: [0.0, 0.0, 0.0]
+  apply_cbf: false
+  cbf_warmup_time: 0.2
+  abort_on_cbf_infeasible: true
+
+  hold_current_pose: true
+  target_transition_duration: 5.0
+  torque_ramp_duration: 1.0
+  desired_position: [0.45, -0.2, 0.46]
+  desired_rotation: [0.70710678, 0.70710678, 0.0, 0.70710678, -0.70710678, 0.0, 0.0, 0.0, -1.0]
+
+  translational_stiffness: [100.0, 100.0, 100.0]
+  rotational_stiffness: [10.0, 10.0, 10.0]
+  translational_damping: [50.0, 50.0, 50.0]
+  rotational_damping: [2.0, 2.0, 2.0]
+  nullspace_stiffness: 0.0
+  nullspace_damping: 0.0
+
+  tau_abs_limits: [20.0, 20.0, 20.0, 20.0, 8.0, 8.0, 8.0]
+  max_torque_rate: [500.0, 500.0, 500.0, 500.0, 500.0, 500.0, 500.0]
+  stop_joint_damping: [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+  derivative_filter_tau: 0.01
+  diagnostics_rate: 100.0

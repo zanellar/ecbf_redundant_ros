@@ -1,0 +1,24 @@
+# Python bytecode and environments
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.pytest_cache/
+
+# Generated simulation and experiment data
+output/*
+!output/.gitkeep
+
+# ROS 1 catkin build products
+ros1_ws/build/
+ros1_ws/devel/
+ros1_ws/install/
+ros1_ws/.catkin_tools/
+
+# IDE and operating-system files
+.vscode/
+.idea/
+.DS_Store
+
+# Temporary controller parameter files
+*.tmp.yaml

@@ -1,0 +1,14 @@
+name: ecbf
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy
+  - scipy
+  - matplotlib
+  - pyyaml
+  - pytest
+  - pip
+  - pip:
+      - mujoco>=3.0
+      - -e .

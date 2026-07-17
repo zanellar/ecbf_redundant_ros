@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Hardware and controller parameters supplied by the Python launcher. -->
+  <arg name="robot_ip"/>
+  <arg name="robot" default="fr3"/>
+  <arg name="arm_id" default="$(arg robot)"/>
+  <arg name="load_gripper" default="false"/>
+  <arg name="controller_name" default="ecbf_controller"/>
+  <arg name="config_file"/>
+  <arg name="log" default="true"/>
+  <arg name="log_file" default="/tmp/ecbf_diagnostics.csv"/>
+
+  <!-- Start Franka hardware, state broadcasting, and robot-state publication. -->
+  <include file="$(find franka_control)/launch/franka_control.launch">
+    <arg name="robot_ip" value="$(arg robot_ip)"/>
+    <arg name="robot" value="$(arg robot)"/>
+    <arg name="arm_id" value="$(arg arm_id)"/>
+    <arg name="load_gripper" value="$(arg load_gripper)"/>
+  </include>
+
+  <!-- Load the generated trial parameters before spawning the effort controller. -->
+  <rosparam command="load" file="$(arg config_file)"/>
+  <node name="ecbf_controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="$(arg controller_name)"/>
+
+  <!-- Save decimated diagnostics outside the 1 kHz controller callback. -->
+  <node if="$(arg log)" name="ecbf_diagnostics_csv_logger" pkg="ecbf_franka_controller" type="diagnostics_csv_logger.py" output="screen">
+    <param name="filename" value="$(arg log_file)"/>
+    <remap from="diagnostics" to="/$(arg controller_name)/diagnostics"/>
+  </node>
+
+  <!-- Stop the controller and terminate roslaunch when its runtime finishes. -->
+  <node name="ecbf_trial_supervisor" pkg="ecbf_franka_controller" type="trial_supervisor.py" required="true" output="screen">
+    <param name="controller_name" value="$(arg controller_name)"/>
+    <remap from="finished" to="/$(arg controller_name)/finished"/>
+  </node>
+</launch>
